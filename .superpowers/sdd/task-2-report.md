@@ -44,4 +44,3 @@ The full run includes the strengthened JP fixed-line checks for possibility, val
 - Unsupported but supported-length prefixes classify as `Unknown`, remain possible, and are invalid through the existing validation logic.
 - The AU 10-digit national number fails possibility and validity and remains `Unknown`.
 - `git diff --check` reported no whitespace errors. Git emitted only its standard LF-to-CRLF working-copy notices for the two edited MoonBit files.
-

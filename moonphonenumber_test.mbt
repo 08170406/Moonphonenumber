@@ -469,6 +469,12 @@ test "JP mobile numbers format progressively as typed" {
   assert_eq(format_as_you_type("09012345678", "JP"), "090-1234-5678")
   assert_eq(format_as_you_type("+81901234", "JP"), "+81 90-1234")
   assert_eq(format_as_you_type("08012345678", "JP"), "080-1234-5678")
+  assert_eq(format_as_you_type("06012345678", "JP"), "060-1234-5678")
+  assert_eq(format_as_you_type("07012345678", "JP"), "070-1234-5678")
+  assert_eq(format_as_you_type("+816012345678", "JP"), "+81 60-1234-5678")
+  assert_eq(format_as_you_type("+817012345678", "JP"), "+81 70-1234-5678")
+  assert_eq(format_as_you_type("+818012345678", "JP"), "+81 80-1234-5678")
+  assert_eq(format_as_you_type("00817012345678", "JP"), "+81 70-1234-5678")
   assert_eq(format_as_you_type("05012345678", "JP"), "05012345678")
 }
 
