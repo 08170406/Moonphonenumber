@@ -10,6 +10,17 @@ The first release supports China (`CN`, calling code `86`), France (`FR`, `33`),
 
 The supported metadata will be a small checked-in subset based on Google libphonenumber `v9.0.39` metadata. The repository will include the upstream Apache-2.0 license notice and identify the pinned upstream version and source file. It will not claim full libphonenumber coverage. Rules and formatting patterns outside the subset return conservative results and are documented.
 
+The initial validation subset recognizes these common plan shapes:
+
+| Region | Possible national lengths | Recognized number types |
+| --- | --- | --- |
+| CN | 10, 11 | Mobile: 11 digits beginning 13–19; common geographic numbers: 10 or 11 digits beginning with `10` or 2–9 (coarse subset) |
+| FR | 9 | Mobile: beginning with `6` or 73–79; fixed line: 1–5; toll-free: 800–805 |
+| GB | 9, 10 | Mobile: 71–75 or 77–79; geographic fixed line: first digit 1 or 2; toll-free: 800/808; premium: selected 842–845, 870–873, 90/91, and 982–989 ranges |
+| SG | 8, 10, 11 | Mobile: 801–809, 81–89, or 90–98; fixed line: first digit 6; VoIP: 31, 32, or 666; toll-free: 800/1800; premium: 1900 |
+
+These prefix summaries are the library's deliberately bounded recognition set. `is_possible` checks the lengths above; `is_valid` requires a matching recognized category. A number outside this set can still be assigned in a supported country and will be reported conservatively as unknown/invalid by this MVP.
+
 ## API and behavior
 
 The public `PhoneNumber` stores an ISO region, calling code, national significant number, and optional extension. `parse(input, default_region?)` accepts ASCII digits, an optional leading `+` or `00`, spaces, parentheses, hyphens, dots, and common `ext`/`x` extension suffixes. Inputs without an international prefix require a supported default region. Parsing establishes number structure; it does not imply that the number is possible or valid.
