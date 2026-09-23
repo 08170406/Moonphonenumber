@@ -38,7 +38,7 @@ Formats are E.164, international, national, and RFC 3966. E.164 strips extension
 
 Possible checks require a supported region, its matching calling code, ASCII national-number digits, and a supported length. Valid checks additionally use the bounded leading-digit/type patterns. These checks describe numbering-plan plausibility only: they do not establish assignment, reachability, ownership, or SMS capability.
 
-As-you-type formatting is stateless: callers pass the current input on each UI change. The first release supports mobile-number grouping for the four regions, preserves incomplete prefixes without claiming validity, and normalizes `00` to `+` when it begins an international number.
+As-you-type formatting is stateless: callers pass the current input on each UI change. The first release supports mobile-number grouping for the four regions, preserves incomplete prefixes without claiming validity, normalizes `00` to `+` when it begins an international number, and leaves prefixes outside the recognized mobile ranges unchanged.
 
 ## Non-goals
 

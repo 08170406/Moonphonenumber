@@ -90,7 +90,8 @@ subscriber assignment, ownership, reachability, carrier, or SMS capability.
 `format_as_you_type(input, region)` formats the current input on each UI change.
 It supports common mobile prefixes for the four regions, keeps partial input
 incomplete, preserves a leading `+`, and normalizes the international `00`
-access prefix to `+` once a country code starts.
+access prefix to `+` once a country code starts. It groups only prefixes inside
+the supported mobile ranges; other input is returned as entered.
 
 ```moonbit
 @phone.format_as_you_type("1380", "CN")     // "138 0"

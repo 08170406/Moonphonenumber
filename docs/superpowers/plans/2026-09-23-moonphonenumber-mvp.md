@@ -222,6 +222,10 @@ Make possibility, validity, and type results require a supported region with its
 
 ### Task 10: Pin classification boundaries for every supported region
 
-Add regression cases around included and excluded prefixes, lengths, and overlapping categories. Keep the bounded coverage table and tests synchronized.
+Add regression cases around included and excluded prefixes, lengths, and overlapping categories. Keep the bounded coverage table and tests synchronized. Also ensure the progressive formatter groups only recognized mobile prefixes.
+
+- [x] Add included/excluded boundary cases for CN, FR, GB, and SG prefixes.
+- [x] Add progressive-format cases for excluded ranges and a valid French partial range.
+- [x] Match as-you-type eligibility to each region's supported mobile prefixes and run the complete check suite.
 
 

@@ -32,6 +32,16 @@ fn calling_code_for_region(region : String) -> String? {
 }
 
 ///|
+fn matches_mobile_prefix(number : String, prefixes : Array[String]) -> Bool {
+  for prefix in prefixes {
+    if number.has_prefix(prefix) || prefix.has_prefix(number) {
+      return true
+    }
+  }
+  false
+}
+
+///|
 pub fn format_as_you_type(input : String, region : String) -> String {
   let code = match calling_code_for_region(region) {
     Some(value) => value
@@ -80,13 +90,56 @@ pub fn format_as_you_type(input : String, region : String) -> String {
     return "+\{code}"
   }
   let (is_mobile_prefix, first_group, next_group) = match region {
-    "CN" => (national.has_prefix("1"), 3, 4)
+    "CN" =>
+      (
+        matches_mobile_prefix(national, [
+          "13", "14", "15", "16", "17", "18", "19",
+        ]),
+        3,
+        4,
+      )
     "FR" if international =>
-      (national.has_prefix("6") || national.has_prefix("7"), 1, 2)
-    "FR" => (national.has_prefix("06") || national.has_prefix("07"), 2, 2)
-    "GB" if international => (national.has_prefix("7"), 4, 6)
-    "GB" => (national.has_prefix("07"), 5, 6)
-    "SG" => (national.has_prefix("8") || national.has_prefix("9"), 4, 4)
+      (
+        matches_mobile_prefix(national, [
+          "6", "73", "74", "75", "76", "77", "78", "79",
+        ]),
+        1,
+        2,
+      )
+    "FR" =>
+      (
+        matches_mobile_prefix(national, [
+          "06", "073", "074", "075", "076", "077", "078", "079",
+        ]),
+        2,
+        2,
+      )
+    "GB" if international =>
+      (
+        matches_mobile_prefix(national, [
+          "71", "72", "73", "74", "75", "77", "78", "79",
+        ]),
+        4,
+        6,
+      )
+    "GB" =>
+      (
+        matches_mobile_prefix(national, [
+          "071", "072", "073", "074", "075", "077", "078", "079",
+        ]),
+        5,
+        6,
+      )
+    "SG" =>
+      (
+        matches_mobile_prefix(national, [
+          "801", "802", "803", "804", "805", "806", "807", "808", "809", "81", "82",
+          "83", "84", "85", "86", "87", "88", "89", "90", "91", "92", "93", "94",
+          "95", "96", "97", "98",
+        ]),
+        4,
+        4,
+      )
     _ => (false, 0, 0)
   }
   if !is_mobile_prefix {

@@ -331,6 +331,105 @@ test "validation rejects inconsistent region and calling code fields" {
 }
 
 ///|
+test "regional prefix boundaries remain conservative" {
+  match parse("19900123456", default_region="CN") {
+    Ok(number) => assert_true(number.number_type() is Mobile)
+    Err(_) => fail("expected upper CN mobile prefix")
+  }
+  match parse("12000123456", default_region="CN") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_false(number.is_valid())
+      assert_true(number.number_type() is Unknown)
+    }
+    Err(_) => fail("expected unrecognized CN prefix")
+  }
+  match parse("2012345678", default_region="CN") {
+    Ok(number) => assert_true(number.number_type() is FixedLine)
+    Err(_) => fail("expected CN geographic prefix")
+  }
+
+  match parse("729999999", default_region="FR") {
+    Ok(number) => assert_true(number.number_type() is Unknown)
+    Err(_) => fail("expected excluded French mobile prefix")
+  }
+  match parse("739999999", default_region="FR") {
+    Ok(number) => assert_true(number.number_type() is Mobile)
+    Err(_) => fail("expected lower French mobile prefix")
+  }
+  match parse("799999999", default_region="FR") {
+    Ok(number) => assert_true(number.number_type() is Mobile)
+    Err(_) => fail("expected upper French mobile prefix")
+  }
+  match parse("806123456", default_region="FR") {
+    Ok(number) => assert_true(number.number_type() is Unknown)
+    Err(_) => fail("expected excluded French toll-free prefix")
+  }
+
+  match parse("7012345678", default_region="GB") {
+    Ok(number) => assert_true(number.number_type() is Unknown)
+    Err(_) => fail("expected excluded British mobile prefix")
+  }
+  match parse("7112345678", default_region="GB") {
+    Ok(number) => assert_true(number.number_type() is Mobile)
+    Err(_) => fail("expected lower British mobile prefix")
+  }
+  match parse("7612345678", default_region="GB") {
+    Ok(number) => assert_true(number.number_type() is Unknown)
+    Err(_) => fail("expected excluded British mobile prefix")
+  }
+  match parse("08421234567", default_region="GB") {
+    Ok(number) => assert_true(number.number_type() is PremiumRate)
+    Err(_) => fail("expected included British premium prefix")
+  }
+  match parse("08461234567", default_region="GB") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_false(number.is_valid())
+    }
+    Err(_) => fail("expected unrecognized British premium prefix")
+  }
+
+  match parse("80012345", default_region="SG") {
+    Ok(number) => assert_true(number.number_type() is TollFree)
+    Err(_) => fail("expected Singapore toll-free prefix")
+  }
+  match parse("80112345", default_region="SG") {
+    Ok(number) => assert_true(number.number_type() is Mobile)
+    Err(_) => fail("expected lower Singapore mobile prefix")
+  }
+  match parse("80912345", default_region="SG") {
+    Ok(number) => assert_true(number.number_type() is Mobile)
+    Err(_) => fail("expected upper Singapore mobile prefix")
+  }
+  match parse("7000000000", default_region="SG") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_false(number.is_valid())
+      assert_true(number.number_type() is Unknown)
+    }
+    Err(_) => fail("expected possible but unrecognized Singapore length")
+  }
+  match parse("99000000", default_region="SG") {
+    Ok(number) => assert_true(number.number_type() is Unknown)
+    Err(_) => fail("expected excluded Singapore mobile prefix")
+  }
+}
+
+///|
+test "as-you-type grouping follows recognized mobile prefixes" {
+  assert_eq(format_as_you_type("1234", "CN"), "1234")
+  assert_eq(format_as_you_type("0721234", "FR"), "0721234")
+  assert_eq(format_as_you_type("0731234", "FR"), "07 31 23 4")
+  assert_eq(format_as_you_type("+3372", "FR"), "+3372")
+  assert_eq(format_as_you_type("070001", "GB"), "070001")
+  assert_eq(format_as_you_type("076001", "GB"), "076001")
+  assert_eq(format_as_you_type("+4470000", "GB"), "+4470000")
+  assert_eq(format_as_you_type("80012345", "SG"), "80012345")
+  assert_eq(format_as_you_type("99000000", "SG"), "99000000")
+}
+
+///|
 test "progressive mobile formatting covers supported regions" {
   assert_eq(format_as_you_type("1380", "CN"), "138 0")
   assert_eq(format_as_you_type("0612", "FR"), "06 12")
