@@ -1,0 +1,7 @@
+Moonphonenumber
+
+The selected numbering metadata for this project is based on Google libphonenumber
+v9.0.39, resources/PhoneNumberMetadata.xml:
+https://github.com/google/libphonenumber/blob/v9.0.39/resources/PhoneNumberMetadata.xml
+
+Google libphonenumber is licensed under the Apache License, Version 2.0.

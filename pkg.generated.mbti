@@ -1,0 +1,51 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "08170406/moonphonenumber"
+
+// Values
+pub fn format_as_you_type(String, String) -> String
+
+pub fn parse(String, default_region? : String) -> Result[PhoneNumber, ParseError]
+
+// Errors
+
+// Types and methods
+pub(all) enum NumberType {
+  Mobile
+  FixedLine
+  TollFree
+  PremiumRate
+  Voip
+  Unknown
+}
+
+pub(all) enum ParseError {
+  EmptyInput
+  InvalidCharacter
+  MissingRegion
+  UnsupportedRegion
+  UnsupportedCallingCode
+  MissingNationalNumber
+  TooLong
+}
+
+pub(all) enum PhoneFormat {
+  E164
+  International
+  National
+  Rfc3966
+}
+
+pub(all) struct PhoneNumber {
+  region : String
+  calling_code : String
+  national_number : String
+  extension : String?
+}
+pub fn PhoneNumber::format(Self, PhoneFormat) -> String
+pub fn PhoneNumber::is_possible(Self) -> Bool
+pub fn PhoneNumber::is_valid(Self) -> Bool
+pub fn PhoneNumber::number_type(Self) -> NumberType
+
+// Type aliases
+
+// Traits
