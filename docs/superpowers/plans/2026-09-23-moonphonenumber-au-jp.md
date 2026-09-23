@@ -30,6 +30,7 @@
 - examples/demo/main.mbt: demonstrate AU/JP parsing and progressive input.
 - docs/superpowers/plans/2026-09-23-moonphonenumber-mvp.md: record the completed follow-up milestone.
 - pkg.generated.mbti: regenerate with moon info; public signatures should not change.
+- .gitignore: exclude the repository-local .worktrees directory used for isolated implementation.
 
 ### Task 1: Add AU/JP region metadata and parsing
 
