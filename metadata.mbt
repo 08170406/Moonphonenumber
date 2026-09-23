@@ -30,6 +30,27 @@ fn metadata_for_calling_code(code : String) -> RegionMetadata? {
 }
 
 ///|
+pub fn supported_regions() -> Array[String] {
+  ["CN", "FR", "GB", "SG"]
+}
+
+///|
+pub fn calling_code_for_region(region : String) -> String? {
+  match metadata_for_region(region) {
+    Some(metadata) => Some(metadata.calling_code)
+    None => None
+  }
+}
+
+///|
+pub fn region_for_calling_code(code : String) -> String? {
+  match metadata_for_calling_code(code) {
+    Some(metadata) => Some(metadata.region)
+    None => None
+  }
+}
+
+///|
 fn has_any_prefix(number : String, prefixes : Array[String]) -> Bool {
   for prefix in prefixes {
     if number.has_prefix(prefix) {

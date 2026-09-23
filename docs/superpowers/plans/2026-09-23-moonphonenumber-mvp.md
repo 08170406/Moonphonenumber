@@ -228,4 +228,12 @@ Add regression cases around included and excluded prefixes, lengths, and overlap
 - [x] Add progressive-format cases for excluded ranges and a valid French partial range.
 - [x] Match as-you-type eligibility to each region's supported mobile prefixes and run the complete check suite.
 
+### Task 11: Expose region discovery for form integrations
+
+Expose a stable list of supported regions and bidirectional ISO-region/calling-code lookups so clients can construct region selectors and identify regions without duplicating metadata.
+
+- [x] Add tests for stable supported-region ordering and both lookup directions.
+- [x] Expose the metadata-backed public functions and reuse the region lookup in as-you-type formatting.
+- [x] Document form integration examples and verify generated interfaces and tests.
+
 

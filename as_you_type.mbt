@@ -24,14 +24,6 @@ fn group_partial(
 }
 
 ///|
-fn calling_code_for_region(region : String) -> String? {
-  match metadata_for_region(region) {
-    Some(metadata) => Some(metadata.calling_code)
-    None => None
-  }
-}
-
-///|
 fn matches_mobile_prefix(number : String, prefixes : Array[String]) -> Bool {
   for prefix in prefixes {
     if number.has_prefix(prefix) || prefix.has_prefix(number) {

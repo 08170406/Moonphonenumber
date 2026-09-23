@@ -42,6 +42,25 @@ match @phone.parse("06 12 34 56 78", default_region="FR") {
 }
 ```
 
+## Discover supported regions
+
+Use the metadata accessors to populate a region selector or map a calling code
+without keeping a second copy of the library's coverage list:
+
+```moonbit
+for region in @phone.supported_regions() {
+  match @phone.calling_code_for_region(region) {
+    Some(code) => println("\{region}: +\{code}")
+    None => ()
+  }
+}
+
+match @phone.region_for_calling_code("65") {
+  Some(region) => println("+65 is \{region}")
+  None => println("Unsupported calling code")
+}
+```
+
 ## Parsing and formatting
 
 `parse` accepts ASCII digits, an optional leading `+` or `00`, spaces,

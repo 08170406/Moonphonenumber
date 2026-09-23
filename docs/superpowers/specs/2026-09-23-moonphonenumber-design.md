@@ -33,6 +33,9 @@ The public API exposes:
 - `PhoneNumber::number_type(self) -> NumberType`
 - `PhoneNumber::format(self, format : PhoneFormat) -> String`
 - `format_as_you_type(input : String, region : String) -> String`
+- `supported_regions() -> Array[String]`
+- `calling_code_for_region(region : String) -> String?`
+- `region_for_calling_code(code : String) -> String?`
 
 Formats are E.164, international, national, and RFC 3966. E.164 strips extensions and emits `+<calling-code><national-number>`. International and national formats append ` ext. <digits>` when an extension is present. RFC 3966 emits `tel:+<calling-code>-<groups>` and appends `;ext=<digits>` when present. National formatting uses the selected region's domestic prefix and grouping rules: the supported Chinese mobile pattern omits its trunk `0`, Chinese geographic, French, and British patterns include `0`, and Singapore has no trunk prefix.
 
