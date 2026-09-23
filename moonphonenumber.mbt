@@ -54,12 +54,6 @@ pub fn PhoneNumber::number_type(self : PhoneNumber) -> NumberType {
 }
 
 ///|
-pub fn PhoneNumber::format(self : PhoneNumber, format : PhoneFormat) -> String {
-  let _ = format
-  "+\{self.calling_code}\{self.national_number}"
-}
-
-///|
 pub fn format_as_you_type(input : String, region : String) -> String {
   let _ = region
   input
