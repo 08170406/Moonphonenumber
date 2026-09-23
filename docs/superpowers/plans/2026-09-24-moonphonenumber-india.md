@@ -66,25 +66,25 @@ git commit -m "feat: add bounded India number parsing"
 - Consumes: the `IN` metadata and `NumberType::Mobile` result from Task 1; existing `PhoneNumber::format` for E164, International, National, and Rfc3966.
 - Produces: 5-5 NSN grouping, with national prefix `0` and existing extension conventions.
 
-- [ ] **Step 1: Add failing format and extension assertions**
+- [x] **Step 1: Add failing format and extension assertions**
 
 For `parse("+919876543210 ext 42")`, assert E164 `+919876543210`, International `+91 98765 43210 ext. 42`, National `098765 43210 ext. 42`, and Rfc3966 `tel:+91-98765-43210;ext=42`.
 
-- [ ] **Step 2: Run the tests and confirm India is not grouped yet**
+- [x] **Step 2: Run the tests and confirm India is not grouped yet**
 
 Run: `moon test`
 Expected: the Indian format assertions fail on the current ungrouped NSN outputs.
 
-- [ ] **Step 3: Add the Indian 5-5 grouping branch**
+- [x] **Step 3: Add the Indian 5-5 grouping branch**
 
 In `group_national_number`, when region is `IN`, NSN length is 10, and `number.number_type()` is `Mobile`, return NSN digits `0..5`, the supplied separator, then digits `5..10`. The existing `PhoneNumber::format` logic supplies the international space, national `0` prefix from metadata, and RFC3966 hyphen, and handles extensions.
 
-- [ ] **Step 4: Run the complete test suite**
+- [x] **Step 4: Run the complete test suite**
 
 Run: `moon test`
 Expected: Indian format and extension cases pass without changing other region formats.
 
-- [ ] **Step 5: Commit complete-number formatting**
+- [x] **Step 5: Commit complete-number formatting**
 
 ```powershell
 git add moonphonenumber_test.mbt format.mbt

@@ -703,3 +703,16 @@ test "progressive mobile formatting covers supported regions" {
   assert_eq(format_as_you_type("0044", "GB"), "+44")
   assert_eq(format_as_you_type("00", "GB"), "00")
 }
+
+///|
+test "Indian mobile numbers use 5-5 formatting with extensions" {
+  match parse("+919876543210 ext 42") {
+    Ok(number) => {
+      assert_eq(number.format(E164), "+919876543210")
+      assert_eq(number.format(International), "+91 98765 43210 ext. 42")
+      assert_eq(number.format(National), "098765 43210 ext. 42")
+      assert_eq(number.format(Rfc3966), "tel:+91-98765-43210;ext=42")
+    }
+    Err(_) => fail("expected Indian mobile number with extension")
+  }
+}
