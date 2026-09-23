@@ -492,6 +492,76 @@ test "AU and JP default-region parsing removes one trunk zero" {
 }
 
 ///|
+test "AU and JP possible lengths and number types" {
+  match parse("+61412345678") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_true(number.is_valid())
+      assert_true(number.number_type() is Mobile)
+    }
+    Err(_) => fail("expected Australian mobile number")
+  }
+  match parse("+61212345678") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_true(number.is_valid())
+      assert_true(number.number_type() is FixedLine)
+    }
+    Err(_) => fail("expected Australian fixed line")
+  }
+  match parse("+819012345678") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_true(number.is_valid())
+      assert_true(number.number_type() is Mobile)
+    }
+    Err(_) => fail("expected Japanese mobile number")
+  }
+  match parse("+816012345678") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_true(number.is_valid())
+      assert_true(number.number_type() is Mobile)
+    }
+    Err(_) => fail("expected Japanese mobile number")
+  }
+  match parse("+81312345678") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_true(number.is_valid())
+      assert_true(number.number_type() is FixedLine)
+    }
+    Err(_) => fail("expected Japanese fixed line")
+  }
+  match parse("+81612345678") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_true(number.is_valid())
+      assert_true(number.number_type() is FixedLine)
+    }
+    Err(_) => fail("expected Japanese fixed line")
+  }
+  for raw in ["+61512345678", "+81201234567"] {
+    match parse(raw) {
+      Ok(number) => {
+        assert_true(number.is_possible())
+        assert_false(number.is_valid())
+        assert_true(number.number_type() is Unknown)
+      }
+      Err(_) => fail("expected possible but unclassified number")
+    }
+  }
+  match parse("+614123456789") {
+    Ok(number) => {
+      assert_false(number.is_possible())
+      assert_false(number.is_valid())
+      assert_true(number.number_type() is Unknown)
+    }
+    Err(_) => fail("expected parseable but impossible-length number")
+  }
+}
+
+///|
 test "progressive mobile formatting covers supported regions" {
   assert_eq(format_as_you_type("1380", "CN"), "138 0")
   assert_eq(format_as_you_type("0612", "FR"), "06 12")
