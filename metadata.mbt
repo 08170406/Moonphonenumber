@@ -129,14 +129,14 @@ fn number_type_for_region(
         "96", "97", "98",
       ]) => Mobile
     "AU" if length == 9 && national_number.has_prefix("4") => Mobile
-    "AU" if length == 9 &&
-      has_any_prefix(national_number, ["2", "3", "7", "8"]) => FixedLine
+    "AU" if length == 9 && has_any_prefix(national_number, ["2", "3", "7", "8"]) =>
+      FixedLine
     "JP" if length == 10 &&
       has_any_prefix(national_number, ["60", "70", "80", "90"]) => Mobile
     "JP" if length == 9 &&
       has_any_prefix(national_number, [
-        "31", "32", "33", "34", "35", "36", "37", "38", "39",
-        "61", "62", "63", "64", "65", "66", "67", "68", "69",
+        "31", "32", "33", "34", "35", "36", "37", "38", "39", "61", "62", "63", "64",
+        "65", "66", "67", "68", "69",
       ]) => FixedLine
     "IN" if length == 10 && national_number.has_prefix("9") => Mobile
     _ => Unknown

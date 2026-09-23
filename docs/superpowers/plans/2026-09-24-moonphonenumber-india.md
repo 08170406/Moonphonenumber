@@ -165,12 +165,12 @@ git commit -m "docs: demonstrate bounded India phone support"
 - Consumes: complete India implementation and docs.
 - Produces: clean formatting, generated interface consistency, passing package checks/tests/demo, and a reviewed diff.
 
-- [ ] **Step 1: Run MoonBit format and checks**
+- [x] **Step 1: Run MoonBit format and checks**
 
 Run: `moon fmt`; `moon check --target all`; `moon test`; `moon info`; `moon run examples/demo`.
 Expected: every command exits successfully and generated interface output contains no public API changes.
 
-- [ ] **Step 2: Review the final diff**
+- [x] **Step 2: Review the final diff**
 
 Run: `git diff --check`; `git status --short`; `git diff --stat`; inspect all changes. Confirm no files under `sources/` changed and only India-scoped implementation/docs changed.
 
