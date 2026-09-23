@@ -236,4 +236,15 @@ Expose a stable list of supported regions and bidirectional ISO-region/calling-c
 - [x] Expose the metadata-backed public functions and reuse the region lookup in as-you-type formatting.
 - [x] Document form integration examples and verify generated interfaces and tests.
 
+### Task 12: Add bounded Australia and Japan coverage
+
+Extend the existing public API to recognize common AU and JP mobile and fixed-line
+numbers while keeping special-service ranges and territory identification outside
+the supported subset.
+
+- [x] Add failing tests for AU/JP parsing, classification, formats, and progressive formatting before implementation.
+- [x] Add AU/JP metadata, calling-code discovery, possible lengths, and bounded mobile/fixed-line classification.
+- [x] Add complete-number formats and mobile as-you-type formatting for AU/JP.
+- [x] Update the README and demo, and run full format, interface, check, test, demo, and diff verification.
+
 
