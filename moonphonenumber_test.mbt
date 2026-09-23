@@ -456,19 +456,7 @@ test "supported region and calling-code discovery" {
 }
 
 ///|
-test "AU and JP metadata and international parsing" {
-  let regions = supported_regions()
-  assert_eq(regions.length(), 6)
-  assert_eq(regions[0], "CN")
-  assert_eq(regions[1], "FR")
-  assert_eq(regions[2], "GB")
-  assert_eq(regions[3], "SG")
-  assert_eq(regions[4], "AU")
-  assert_eq(regions[5], "JP")
-  assert_eq(calling_code_for_region("AU"), Some("61"))
-  assert_eq(calling_code_for_region("JP"), Some("81"))
-  assert_eq(region_for_calling_code("61"), Some("AU"))
-  assert_eq(region_for_calling_code("81"), Some("JP"))
+test "AU and JP international parsing" {
   match parse("+61 412 345 678") {
     Ok(number) => {
       assert_eq(number.region, "AU")

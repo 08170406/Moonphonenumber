@@ -44,21 +44,9 @@
 
 - [ ] **Step 1: Add failing metadata and parse tests**
 
-Append a test that checks the six-region ordering and both lookups, then parses these international examples: +61 412 345 678 to AU / 412345678, and +81 90-1234-5678 to JP / 9012345678. Add a second test for 0412 345 678 with default_region="AU" and 090-1234-5678 with default_region="JP"; each must remove one leading national 0.
+Extend the existing supported-region discovery test to check the six-region order and both AU/JP lookups, without repeating those assertions in another test. Add a separate test that parses +61 412 345 678 to AU / 412345678 and +81 90-1234-5678 to JP / 9012345678. Add a second parsing test for 0412 345 678 with default_region="AU" and 090-1234-5678 with default_region="JP"; each must remove one leading national 0.
 
-    test "AU and JP metadata and international parsing" {
-      let regions = supported_regions()
-      assert_eq(regions.length(), 6)
-      assert_eq(regions[0], "CN")
-      assert_eq(regions[1], "FR")
-      assert_eq(regions[2], "GB")
-      assert_eq(regions[3], "SG")
-      assert_eq(regions[4], "AU")
-      assert_eq(regions[5], "JP")
-      assert_eq(calling_code_for_region("AU"), Some("61"))
-      assert_eq(calling_code_for_region("JP"), Some("81"))
-      assert_eq(region_for_calling_code("61"), Some("AU"))
-      assert_eq(region_for_calling_code("81"), Some("JP"))
+    test "AU and JP international parsing" {
       match parse("+61 412 345 678") {
         Ok(number) => {
           assert_eq(number.region, "AU")
@@ -92,7 +80,7 @@ Map 61 to metadata_for_region("AU") and 81 to metadata_for_region("JP"). Do not 
 - [ ] **Step 4: Run all tests and commit**
 
 Run: moon test
-Expected: all tests pass, including both new metadata/parsing cases.
+Expected: all tests pass, including both metadata and parsing cases.
 
     git add metadata.mbt moonphonenumber_test.mbt
     git commit -m "feat: add AU and JP region metadata"
