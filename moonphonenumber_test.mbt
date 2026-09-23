@@ -432,21 +432,75 @@ test "as-you-type grouping follows recognized mobile prefixes" {
 ///|
 test "supported region and calling-code discovery" {
   let regions = supported_regions()
-  assert_eq(regions.length(), 4)
+  assert_eq(regions.length(), 6)
   assert_eq(regions[0], "CN")
   assert_eq(regions[1], "FR")
   assert_eq(regions[2], "GB")
   assert_eq(regions[3], "SG")
+  assert_eq(regions[4], "AU")
+  assert_eq(regions[5], "JP")
   assert_eq(calling_code_for_region("CN"), Some("86"))
   assert_eq(calling_code_for_region("FR"), Some("33"))
   assert_eq(calling_code_for_region("GB"), Some("44"))
   assert_eq(calling_code_for_region("SG"), Some("65"))
+  assert_eq(calling_code_for_region("AU"), Some("61"))
+  assert_eq(calling_code_for_region("JP"), Some("81"))
   assert_eq(calling_code_for_region("US"), None)
   assert_eq(region_for_calling_code("86"), Some("CN"))
   assert_eq(region_for_calling_code("33"), Some("FR"))
   assert_eq(region_for_calling_code("44"), Some("GB"))
   assert_eq(region_for_calling_code("65"), Some("SG"))
+  assert_eq(region_for_calling_code("61"), Some("AU"))
+  assert_eq(region_for_calling_code("81"), Some("JP"))
   assert_eq(region_for_calling_code("1"), None)
+}
+
+///|
+test "AU and JP metadata and international parsing" {
+  let regions = supported_regions()
+  assert_eq(regions.length(), 6)
+  assert_eq(regions[0], "CN")
+  assert_eq(regions[1], "FR")
+  assert_eq(regions[2], "GB")
+  assert_eq(regions[3], "SG")
+  assert_eq(regions[4], "AU")
+  assert_eq(regions[5], "JP")
+  assert_eq(calling_code_for_region("AU"), Some("61"))
+  assert_eq(calling_code_for_region("JP"), Some("81"))
+  assert_eq(region_for_calling_code("61"), Some("AU"))
+  assert_eq(region_for_calling_code("81"), Some("JP"))
+  match parse("+61 412 345 678") {
+    Ok(number) => {
+      assert_eq(number.region, "AU")
+      assert_eq(number.national_number, "412345678")
+    }
+    Err(_) => fail("expected Australian number")
+  }
+  match parse("+81 90-1234-5678") {
+    Ok(number) => {
+      assert_eq(number.region, "JP")
+      assert_eq(number.national_number, "9012345678")
+    }
+    Err(_) => fail("expected Japanese number")
+  }
+}
+
+///|
+test "AU and JP default-region parsing removes one trunk zero" {
+  match parse("0412 345 678", default_region="AU") {
+    Ok(number) => {
+      assert_eq(number.region, "AU")
+      assert_eq(number.national_number, "412345678")
+    }
+    Err(_) => fail("expected Australian national number")
+  }
+  match parse("090-1234-5678", default_region="JP") {
+    Ok(number) => {
+      assert_eq(number.region, "JP")
+      assert_eq(number.national_number, "9012345678")
+    }
+    Err(_) => fail("expected Japanese national number")
+  }
 }
 
 ///|

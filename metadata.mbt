@@ -14,6 +14,8 @@ fn metadata_for_region(region : String) -> RegionMetadata? {
     "FR" => Some({ region: "FR", calling_code: "33", national_prefix: "0", })
     "GB" => Some({ region: "GB", calling_code: "44", national_prefix: "0", })
     "SG" => Some({ region: "SG", calling_code: "65", national_prefix: "", })
+    "AU" => Some({ region: "AU", calling_code: "61", national_prefix: "0", })
+    "JP" => Some({ region: "JP", calling_code: "81", national_prefix: "0", })
     _ => None
   }
 }
@@ -25,13 +27,15 @@ fn metadata_for_calling_code(code : String) -> RegionMetadata? {
     "33" => metadata_for_region("FR")
     "44" => metadata_for_region("GB")
     "65" => metadata_for_region("SG")
+    "61" => metadata_for_region("AU")
+    "81" => metadata_for_region("JP")
     _ => None
   }
 }
 
 ///|
 pub fn supported_regions() -> Array[String] {
-  ["CN", "FR", "GB", "SG"]
+  ["CN", "FR", "GB", "SG", "AU", "JP"]
 }
 
 ///|
