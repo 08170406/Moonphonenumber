@@ -432,19 +432,21 @@ test "as-you-type grouping follows recognized mobile prefixes" {
 ///|
 test "supported region and calling-code discovery" {
   let regions = supported_regions()
-  assert_eq(regions.length(), 6)
+  assert_eq(regions.length(), 7)
   assert_eq(regions[0], "CN")
   assert_eq(regions[1], "FR")
   assert_eq(regions[2], "GB")
   assert_eq(regions[3], "SG")
   assert_eq(regions[4], "AU")
   assert_eq(regions[5], "JP")
+  assert_eq(regions[6], "IN")
   assert_eq(calling_code_for_region("CN"), Some("86"))
   assert_eq(calling_code_for_region("FR"), Some("33"))
   assert_eq(calling_code_for_region("GB"), Some("44"))
   assert_eq(calling_code_for_region("SG"), Some("65"))
   assert_eq(calling_code_for_region("AU"), Some("61"))
   assert_eq(calling_code_for_region("JP"), Some("81"))
+  assert_eq(calling_code_for_region("IN"), Some("91"))
   assert_eq(calling_code_for_region("US"), None)
   assert_eq(region_for_calling_code("86"), Some("CN"))
   assert_eq(region_for_calling_code("33"), Some("FR"))
@@ -452,7 +454,46 @@ test "supported region and calling-code discovery" {
   assert_eq(region_for_calling_code("65"), Some("SG"))
   assert_eq(region_for_calling_code("61"), Some("AU"))
   assert_eq(region_for_calling_code("81"), Some("JP"))
+  assert_eq(region_for_calling_code("91"), Some("IN"))
   assert_eq(region_for_calling_code("1"), None)
+}
+
+///|
+test "India parsing and classification uses the bounded 9-prefix subset" {
+  for raw in ["+919876543210", "09876543210"] {
+    let parsed = if raw.has_prefix("+") {
+      parse(raw)
+    } else {
+      parse(raw, default_region="IN")
+    }
+    match parsed {
+      Ok(number) => {
+        assert_eq(number.region, "IN")
+        assert_eq(number.calling_code, "91")
+        assert_eq(number.national_number, "9876543210")
+        assert_true(number.is_possible())
+        assert_true(number.is_valid())
+        assert_true(number.number_type() is Mobile)
+      }
+      Err(_) => fail("expected recognized Indian mobile number")
+    }
+  }
+  match parse("+918765432109") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_false(number.is_valid())
+      assert_true(number.number_type() is Unknown)
+    }
+    Err(_) => fail("expected possible but unrecognized Indian prefix")
+  }
+  match parse("+91987654321") {
+    Ok(number) => {
+      assert_false(number.is_possible())
+      assert_false(number.is_valid())
+      assert_true(number.number_type() is Unknown)
+    }
+    Err(_) => fail("expected parseable Indian number with unsupported length")
+  }
 }
 
 ///|

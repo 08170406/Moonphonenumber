@@ -29,27 +29,27 @@
 - Consumes: `parse(input, default_region?)`, `supported_regions()`, `calling_code_for_region(region)`, `region_for_calling_code(code)`, `PhoneNumber::is_possible()`, `PhoneNumber::number_type()`, and `PhoneNumber::is_valid()`.
 - Produces: metadata for `IN` / calling code `91` / national prefix `0`; possible NSN length 10; Mobile classification only for 10-digit NSNs starting `9`.
 
-- [ ] **Step 1: Extend the consolidated discovery assertion and add failing India parse/classification cases**
+- [x] **Step 1: Extend the consolidated discovery assertion and add failing India parse/classification cases**
 
 In the existing `supported region and calling-code discovery` test, expect 7 entries in order `CN, FR, GB, SG, AU, JP, IN`, check the `IN` lookup as `Some("91")`, and check calling code `91` resolves to `Some("IN")`.
 
 Add a test that asserts `parse("+919876543210")` and `parse("09876543210", default_region="IN")` both normalize to region `IN`, code `91`, and NSN `9876543210`; both are possible, valid, and `Mobile`. In the same test, assert `parse("+918765432109")` is possible, not valid, and `Unknown`, while `parse("+91987654321")` is not possible, not valid, and `Unknown`.
 
-- [ ] **Step 2: Run the tests and confirm the feature is missing**
+- [x] **Step 2: Run the tests and confirm the feature is missing**
 
 Run: `moon test`
 Expected: new India cases fail because calling code `91` is unsupported, while existing tests remain passing.
 
-- [ ] **Step 3: Add only the required metadata and classification rules**
+- [x] **Step 3: Add only the required metadata and classification rules**
 
 In `metadata_for_region`, add `"IN" => Some({ region: "IN", calling_code: "91", national_prefix: "0", })`. In `metadata_for_calling_code`, map `"91"` through `metadata_for_region("IN")`. Append `"IN"` to `supported_regions()`. In `possible_length`, accept length 10 for `IN`. In `number_type_for_region`, classify `IN` as `Mobile` only when length is 10 and the NSN has prefix `"9"`; otherwise return the existing `Unknown` fallback.
 
-- [ ] **Step 4: Run the tests and confirm parsing/classification pass**
+- [x] **Step 4: Run the tests and confirm parsing/classification pass**
 
 Run: `moon test`
 Expected: all existing and new tests pass.
 
-- [ ] **Step 5: Commit the completed parsing/classification slice**
+- [x] **Step 5: Commit the completed parsing/classification slice**
 
 ```powershell
 git add moonphonenumber_test.mbt metadata.mbt
