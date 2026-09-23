@@ -81,10 +81,9 @@ For `+33612345678 ext 42`, the formatters produce:
 | RFC 3966 | `tel:+33-6-12-34-56-78;ext=42` |
 
 E.164 output omits extensions. National output uses `0` for supported French,
-British, Indian, and Chinese geographic numbers, omits it for Chinese mobile
-numbers, uses `0` for Australian and Japanese numbers, and has no trunk prefix
-for Singapore. Australian and Indian groups use spaces, and Japanese groups use
-hyphens:
+British, Australian, Japanese, and Indian subsets and for Chinese geographic
+numbers. Chinese mobile output omits it, and Singapore has no trunk prefix.
+Australian and Indian groups use spaces, and Japanese groups use hyphens:
 
 | Number | International | National | RFC 3966 |
 | --- | --- | --- | --- |

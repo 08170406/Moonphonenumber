@@ -723,6 +723,7 @@ test "Indian mobile numbers format progressively as typed" {
   assert_eq(format_as_you_type("0987654", "IN"), "098765 4")
   assert_eq(format_as_you_type("+919876543210", "IN"), "+91 98765 43210")
   assert_eq(format_as_you_type("+9198765", "IN"), "+91 98765")
+  assert_eq(format_as_you_type("009198765", "IN"), "+91 98765")
   assert_eq(format_as_you_type("00919876543210", "IN"), "+91 98765 43210")
   assert_eq(format_as_you_type("0812345", "IN"), "0812345")
 }
