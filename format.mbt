@@ -20,6 +20,14 @@ fn group_national_number(number : PhoneNumber, separator : String) -> String {
       "\{nsn.unsafe_substring(start=0, end=3)}\{separator}\{nsn.unsafe_substring(start=3, end=6)}\{separator}\{nsn.unsafe_substring(start=6, end=10)}"
     "SG" if length == 8 =>
       "\{nsn.unsafe_substring(start=0, end=4)}\{separator}\{nsn.unsafe_substring(start=4, end=8)}"
+    "AU" if length == 9 && number.number_type() is Mobile =>
+      "\{nsn.unsafe_substring(start=0, end=3)}\{separator}\{nsn.unsafe_substring(start=3, end=6)}\{separator}\{nsn.unsafe_substring(start=6, end=9)}"
+    "AU" if length == 9 && number.number_type() is FixedLine =>
+      "\{nsn.unsafe_substring(start=0, end=1)}\{separator}\{nsn.unsafe_substring(start=1, end=5)}\{separator}\{nsn.unsafe_substring(start=5, end=9)}"
+    "JP" if length == 10 && number.number_type() is Mobile =>
+      "\{nsn.unsafe_substring(start=0, end=2)}-\{nsn.unsafe_substring(start=2, end=6)}-\{nsn.unsafe_substring(start=6, end=10)}"
+    "JP" if length == 9 && number.number_type() is FixedLine =>
+      "\{nsn.unsafe_substring(start=0, end=1)}-\{nsn.unsafe_substring(start=1, end=5)}-\{nsn.unsafe_substring(start=5, end=9)}"
     _ => nsn
   }
 }

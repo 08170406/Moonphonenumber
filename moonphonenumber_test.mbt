@@ -456,6 +456,72 @@ test "supported region and calling-code discovery" {
 }
 
 ///|
+test "Australian mobile and fixed line formatting" {
+  match parse("+61412345678") {
+    Ok(number) => {
+      assert_eq(number.format(E164), "+61412345678")
+      assert_eq(number.format(International), "+61 412 345 678")
+      assert_eq(number.format(National), "0412 345 678")
+      assert_eq(number.format(Rfc3966), "tel:+61-412-345-678")
+    }
+    Err(_) => fail("expected Australian mobile number")
+  }
+  match parse("+61212345678") {
+    Ok(number) => {
+      assert_eq(number.format(E164), "+61212345678")
+      assert_eq(number.format(International), "+61 2 1234 5678")
+      assert_eq(number.format(National), "02 1234 5678")
+      assert_eq(number.format(Rfc3966), "tel:+61-2-1234-5678")
+    }
+    Err(_) => fail("expected Australian fixed line")
+  }
+}
+
+///|
+test "Japanese mobile and fixed line formatting" {
+  match parse("+819012345678") {
+    Ok(number) => {
+      assert_eq(number.format(E164), "+819012345678")
+      assert_eq(number.format(International), "+81 90-1234-5678")
+      assert_eq(number.format(National), "090-1234-5678")
+      assert_eq(number.format(Rfc3966), "tel:+81-90-1234-5678")
+    }
+    Err(_) => fail("expected Japanese mobile number")
+  }
+  match parse("+81312345678") {
+    Ok(number) => {
+      assert_eq(number.format(E164), "+81312345678")
+      assert_eq(number.format(International), "+81 3-1234-5678")
+      assert_eq(number.format(National), "03-1234-5678")
+      assert_eq(number.format(Rfc3966), "tel:+81-3-1234-5678")
+    }
+    Err(_) => fail("expected Japanese fixed line")
+  }
+}
+
+///|
+test "Australian and Japanese extension formatting" {
+  match parse("+61412345678 ext 42") {
+    Ok(number) => {
+      assert_eq(number.format(E164), "+61412345678")
+      assert_eq(number.format(International), "+61 412 345 678 ext. 42")
+      assert_eq(number.format(National), "0412 345 678 ext. 42")
+      assert_eq(number.format(Rfc3966), "tel:+61-412-345-678;ext=42")
+    }
+    Err(_) => fail("expected Australian number with extension")
+  }
+  match parse("+819012345678 ext 42") {
+    Ok(number) => {
+      assert_eq(number.format(E164), "+819012345678")
+      assert_eq(number.format(International), "+81 90-1234-5678 ext. 42")
+      assert_eq(number.format(National), "090-1234-5678 ext. 42")
+      assert_eq(number.format(Rfc3966), "tel:+81-90-1234-5678;ext=42")
+    }
+    Err(_) => fail("expected Japanese number with extension")
+  }
+}
+
+///|
 test "AU and JP international parsing" {
   match parse("+61 412 345 678") {
     Ok(number) => {
