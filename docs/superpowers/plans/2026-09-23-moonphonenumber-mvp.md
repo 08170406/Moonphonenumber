@@ -39,22 +39,22 @@
 - Define `PhoneFormat { E164, International, National, Rfc3966 }`, `NumberType { Mobile, FixedLine, TollFree, PremiumRate, Voip, Unknown }`, and `ParseError { EmptyInput, InvalidCharacter, MissingRegion, UnsupportedRegion, UnsupportedCallingCode, MissingNationalNumber, TooLong }`.
 - Define `parse(input : String, default_region? : String) -> Result[PhoneNumber, ParseError]` and the public method signatures used by later tasks.
 
-- [ ] **Step 1: Write the public API contract test first**
+- [x] **Step 1: Write the public API contract test first**
 
 Add a test that parses `+33612345678` and asserts region `FR`, calling code `33`, NSN `612345678`, and no extension. Add one failure assertion for `+999123` returning `UnsupportedCallingCode`.
 
-- [ ] **Step 2: Run the contract test and confirm it fails because the module/API is absent**
+- [x] **Step 2: Run the contract test and confirm it fails because the module/API is absent**
 
 Run: `moon test`
 Expected: a MoonBit compile diagnostic for the missing module or missing `parse` API.
 
-- [ ] **Step 3: Scaffold with explicit ownership and add the smallest compiling public types/API**
+- [x] **Step 3: Scaffold with explicit ownership and add the smallest compiling public types/API**
 
 Run: `moon new . --user 08170406 --name moonphonenumber` only after confirming it preserves the existing README; if it refuses the non-empty directory, create the two MoonBit config files directly using the generated template from a temporary `moon new` directory. Keep the existing initial README content and extend it rather than replacing it.
 
 Implement the public data types and method declarations needed for the first test. Add Apache-2.0 `LICENSE` and a `NOTICE` that attributes the selected metadata to Google libphonenumber `v9.0.39`, `resources/PhoneNumberMetadata.xml`, with the upstream URL.
 
-- [ ] **Step 4: Run the first test and make the parser test pass**
+- [x] **Step 4: Run the first test and make the parser test pass**
 
 Run: `moon test`
 Expected: the API contract assertions pass; the implementation may initially recognize only international calling codes required by the test.
@@ -70,19 +70,19 @@ Expected: the API contract assertions pass; the implementation may initially rec
 - Consume: `PhoneNumber`, `ParseError`, and `parse` from Task 1.
 - Produce: internal `RegionMetadata`, `metadata_for_region(region : String)`, `metadata_for_calling_code(code : String)`, and `normalize_input(input : String) -> Result[(Bool, String, String?), ParseError]`.
 
-- [ ] **Step 1: Add failing parse cases**
+- [x] **Step 1: Add failing parse cases**
 
 Cover local CN mobile `13800138000` with default `CN`; domestic GB `020 7031 3000` with `GB`; French `06 12 34 56 78 ext 42` with `FR`; Singapore `+65 9123 4567`; `0044 7700 900123`; missing default region; and unsupported region/calling code.
 
-- [ ] **Step 2: Run `moon test` and verify the new cases fail for missing behavior**
+- [x] **Step 2: Run `moon test` and verify the new cases fail for missing behavior**
 
 Expected: compile or assertion failures identify the absent regional parsing behavior.
 
-- [ ] **Step 3: Implement normalization and metadata-driven region resolution**
+- [x] **Step 3: Implement normalization and metadata-driven region resolution**
 
 Strip only the documented separators, parse `ext`/`x` suffixes, interpret `00` as the international prefix, require an explicit supported region for national input, remove national trunk prefix according to region rules, and reject more than 15 E.164 digits. Do not reject a structurally parsed number solely because its plan length is not possible.
 
-- [ ] **Step 4: Run `moon test` and confirm every parse case passes**
+- [x] **Step 4: Run `moon test` and confirm every parse case passes**
 
 Expected: all Task 1 and Task 2 cases pass and malformed characters return `InvalidCharacter`.
 
@@ -189,3 +189,4 @@ Expected: every command exits 0 and generated interface changes match the intend
 - [ ] **Step 3: Review the final diff and commit verified work**
 
 Run: `git status --short`; `git diff --check`; `git diff --stat`; review `git diff` and confirm no synced `sources/` files were touched. Commit as `feat: add Moonphonenumber regional MVP` after verification.
+
