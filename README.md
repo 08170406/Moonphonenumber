@@ -1,9 +1,9 @@
 # Moonphonenumber
 
 Moonphonenumber is a dependency-free MoonBit library for parsing, formatting, and
-checking phone numbers in a clearly bounded set of six regions: China (`CN`),
+checking phone numbers in a clearly bounded set of seven regions: China (`CN`),
 France (`FR`), the United Kingdom (`GB`), Singapore (`SG`), Australia (`AU`),
-and Japan (`JP`). It is an
+Japan (`JP`), and India (`IN`). It is an
 ecosystem-native starting point for MoonBit web forms, account systems, CRM tools,
 and contact imports.
 
@@ -81,9 +81,9 @@ For `+33612345678 ext 42`, the formatters produce:
 | RFC 3966 | `tel:+33-6-12-34-56-78;ext=42` |
 
 E.164 output omits extensions. National output uses `0` for supported French,
-British, and Chinese geographic numbers, omits it for Chinese mobile numbers,
-uses `0` for Australian and Japanese numbers, and has no trunk prefix for
-Singapore. Australian groups use spaces and Japanese groups use hyphens:
+British, Australian, Japanese, and Indian subsets and for Chinese geographic
+numbers. Chinese mobile output omits it, and Singapore has no trunk prefix.
+Australian and Indian groups use spaces, and Japanese groups use hyphens:
 
 | Number | International | National | RFC 3966 |
 | --- | --- | --- | --- |
@@ -91,10 +91,11 @@ Singapore. Australian groups use spaces and Japanese groups use hyphens:
 | AU fixed line `+61212345678` | `+61 2 1234 5678` | `02 1234 5678` | `tel:+61-2-1234-5678` |
 | JP mobile `+819012345678` | `+81 90-1234-5678` | `090-1234-5678` | `tel:+81-90-1234-5678` |
 | JP fixed line `+81312345678` | `+81 3-1234-5678` | `03-1234-5678` | `tel:+81-3-1234-5678` |
+| IN mobile subset `+919876543210` | `+91 98765 43210` | `098765 43210` | `tel:+91-98765-43210` |
 
 For domestic input, pass `default_region="AU"` for `0412 345 678` or
-`default_region="JP"` for `090-1234-5678`. Both normalize to the corresponding
-E.164 values above.
+`default_region="JP"` for `090-1234-5678`, or `default_region="IN"` for
+`09876543210`. These normalize to the corresponding E.164 values above.
 
 ## Supported numbering subset
 
@@ -110,6 +111,7 @@ of every number currently assigned in each country.
 | SG | +65 | 8, 10, 11 | Mobile: 801–809, 81–89, 90–98; fixed line: starting `6`; VoIP: 31, 32, 666; toll-free: 800/1800; premium: 1900 |
 | AU | +61 | 9 | Mobile: starts with `4`; fixed line: starts with `2`, `3`, `7`, or `8` |
 | JP | +81 | 9, 10 | Mobile: 10 digits starting `60`, `70`, `80`, or `90`; fixed line: 9 digits starting `31`–`39` or `61`–`69` (Tokyo and Osaka subset) |
+| IN | +91 | 10 | Mobile subset: 10 digits starting with `9` |
 
 `is_possible()` checks that the supported region and calling code agree, the
 national number contains only ASCII digits, and its length is supported.
@@ -120,14 +122,18 @@ the number matches this library's numbering-plan subset; it does **not** confirm
 subscriber assignment, ownership, reachability, carrier, or SMS capability.
 Australian 13/1300/1800 and Japanese service ranges, along with other
 variable-length or special-service numbers, are outside the recognized AU/JP
-types. A supported-length number with an unrecognized prefix may be possible
-but `Unknown` and invalid. Calling code `+61` resolves to AU here without
-distinguishing Christmas Island or the Cocos (Keeling) Islands.
+types. Indian coverage recognizes only 10-digit NSNs starting with `9`; other
+10-digit prefixes are possible by length but `Unknown` and invalid. Indian
+fixed-line, toll-free, premium, emergency, service, and other mobile ranges are
+outside the recognized subset. A supported-length number in any region with an
+unrecognized prefix may be possible but `Unknown` and invalid. Calling code
+`+61` resolves to AU here without distinguishing Christmas Island or the Cocos
+(Keeling) Islands.
 
 ## As-you-type formatting
 
 `format_as_you_type(input, region)` formats the current input on each UI change.
-It supports common mobile prefixes for the six regions, keeps partial input
+It supports common mobile prefixes for the seven regions, keeps partial input
 incomplete, preserves a leading `+`, and normalizes the international `00`
 access prefix to `+` once a country code starts. It groups only prefixes inside
 the supported mobile ranges; other input is returned as entered.
@@ -141,6 +147,10 @@ the supported mobile ranges; other input is returned as entered.
 @phone.format_as_you_type("+61412345", "AU") // "+61 412 345"
 @phone.format_as_you_type("09012345678", "JP") // "090-1234-5678"
 @phone.format_as_you_type("+81901234", "JP") // "+81 90-1234"
+@phone.format_as_you_type("09876543210", "IN") // "098765 43210"
+@phone.format_as_you_type("+9198765", "IN") // "+91 98765"
+@phone.format_as_you_type("00919876543210", "IN") // "+91 98765 43210"
+@phone.format_as_you_type("0812345", "IN") // "0812345"
 @phone.format_as_you_type("0044", "GB")     // "+44"
 ```
 
@@ -155,7 +165,7 @@ moon run examples/demo
 ```
 
 The demo prints E.164, validity, number type, and progressive formatting for
-sample Chinese, Australian, and Japanese mobile numbers.
+sample Chinese, Australian, Japanese, and Indian mobile numbers.
 
 ## Metadata and license
 

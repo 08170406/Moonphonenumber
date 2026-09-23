@@ -16,6 +16,7 @@ fn metadata_for_region(region : String) -> RegionMetadata? {
     "SG" => Some({ region: "SG", calling_code: "65", national_prefix: "", })
     "AU" => Some({ region: "AU", calling_code: "61", national_prefix: "0", })
     "JP" => Some({ region: "JP", calling_code: "81", national_prefix: "0", })
+    "IN" => Some({ region: "IN", calling_code: "91", national_prefix: "0", })
     _ => None
   }
 }
@@ -29,13 +30,14 @@ fn metadata_for_calling_code(code : String) -> RegionMetadata? {
     "65" => metadata_for_region("SG")
     "61" => metadata_for_region("AU")
     "81" => metadata_for_region("JP")
+    "91" => metadata_for_region("IN")
     _ => None
   }
 }
 
 ///|
 pub fn supported_regions() -> Array[String] {
-  ["CN", "FR", "GB", "SG", "AU", "JP"]
+  ["CN", "FR", "GB", "SG", "AU", "JP", "IN"]
 }
 
 ///|
@@ -73,6 +75,7 @@ fn possible_length(region : String, length : Int) -> Bool {
     "SG" => length == 8 || length == 10 || length == 11
     "AU" => length == 9
     "JP" => length == 9 || length == 10
+    "IN" => length == 10
     _ => false
   }
 }
@@ -126,15 +129,16 @@ fn number_type_for_region(
         "96", "97", "98",
       ]) => Mobile
     "AU" if length == 9 && national_number.has_prefix("4") => Mobile
-    "AU" if length == 9 &&
-      has_any_prefix(national_number, ["2", "3", "7", "8"]) => FixedLine
+    "AU" if length == 9 && has_any_prefix(national_number, ["2", "3", "7", "8"]) =>
+      FixedLine
     "JP" if length == 10 &&
       has_any_prefix(national_number, ["60", "70", "80", "90"]) => Mobile
     "JP" if length == 9 &&
       has_any_prefix(national_number, [
-        "31", "32", "33", "34", "35", "36", "37", "38", "39",
-        "61", "62", "63", "64", "65", "66", "67", "68", "69",
+        "31", "32", "33", "34", "35", "36", "37", "38", "39", "61", "62", "63", "64",
+        "65", "66", "67", "68", "69",
       ]) => FixedLine
+    "IN" if length == 10 && national_number.has_prefix("9") => Mobile
     _ => Unknown
   }
 }

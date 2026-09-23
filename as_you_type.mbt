@@ -139,24 +139,14 @@ pub fn format_as_you_type(input : String, region : String) -> String {
         4,
         " ",
       )
-    "AU" if international =>
-      (matches_mobile_prefix(national, ["4"]), 3, 3, " ")
-    "AU" =>
-      (matches_mobile_prefix(national, ["04"]), 4, 3, " ")
+    "AU" if international => (matches_mobile_prefix(national, ["4"]), 3, 3, " ")
+    "AU" => (matches_mobile_prefix(national, ["04"]), 4, 3, " ")
     "JP" if international =>
-      (
-        matches_mobile_prefix(national, ["60", "70", "80", "90"]),
-        2,
-        4,
-        "-",
-      )
+      (matches_mobile_prefix(national, ["60", "70", "80", "90"]), 2, 4, "-")
     "JP" =>
-      (
-        matches_mobile_prefix(national, ["060", "070", "080", "090"]),
-        3,
-        4,
-        "-",
-      )
+      (matches_mobile_prefix(national, ["060", "070", "080", "090"]), 3, 4, "-")
+    "IN" if international => (matches_mobile_prefix(national, ["9"]), 5, 5, " ")
+    "IN" => (matches_mobile_prefix(national, ["09"]), 6, 5, " ")
     _ => (false, 0, 0, " ")
   }
   if !is_mobile_prefix {
