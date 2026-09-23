@@ -7,17 +7,33 @@ fn normalize_input(
   if input == "" {
     return Err(EmptyInput)
   }
-  let chars = input.to_lower().to_array()
+  let normalized = input.to_lower()
+  let is_tel_uri = normalized.has_prefix("tel:")
+  let chars = normalized.to_array()
+  let start_index = if is_tel_uri { 4 } else { 0 }
+  if is_tel_uri && (chars.length() <= start_index || chars[start_index] != '+') {
+    return Err(InvalidCharacter)
+  }
   let mut international = false
   let mut digits = ""
   let mut extension_digits = ""
   let mut in_extension = false
-  let mut i = 0
+  let mut i = start_index
   while i < chars.length() {
     let ch = chars[i]
-    if ch == '+' && i == 0 {
+    if ch == '+' && i == start_index {
       international = true
       i += 1
+    } else if !in_extension &&
+      digits != "" &&
+      ch == ';' &&
+      i + 4 < chars.length() &&
+      chars[i + 1] == 'e' &&
+      chars[i + 2] == 'x' &&
+      chars[i + 3] == 't' &&
+      chars[i + 4] == '=' {
+      in_extension = true
+      i += 5
     } else if !in_extension && digits != "" && ch == 'x' {
       in_extension = true
       i += 1

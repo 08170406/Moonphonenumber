@@ -67,6 +67,23 @@ test "x extension and documented separators" {
 }
 
 ///|
+test "RFC 3966 global URI input" {
+  match parse("tel:+33-6-12-34-56-78;ext=42") {
+    Ok(number) => {
+      assert_eq(number.region, "FR")
+      assert_eq(number.national_number, "612345678")
+      assert_eq(number.extension, Some("42"))
+      assert_eq(number.format(Rfc3966), "tel:+33-6-12-34-56-78;ext=42")
+    }
+    Err(_) => fail("expected global RFC 3966 telephone URI")
+  }
+  match parse("tel:06-12-34-56-78;phone-context=+33", default_region="FR") {
+    Err(InvalidCharacter) => ()
+    _ => fail("expected local phone-context URI to remain unsupported")
+  }
+}
+
+///|
 test "Singapore international parse" {
   match parse("+65 9123 4567") {
     Ok(number) => {

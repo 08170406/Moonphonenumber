@@ -45,9 +45,11 @@ match @phone.parse("06 12 34 56 78", default_region="FR") {
 ## Parsing and formatting
 
 `parse` accepts ASCII digits, an optional leading `+` or `00`, spaces,
-parentheses, hyphens, dots, and `ext`/`x` extension suffixes. National input
-requires a supported `default_region`. Parsing establishes a normalized number
-structure; it does not imply that the number is possible or valid.
+parentheses, hyphens, dots, `ext`/`x` extension suffixes, and global RFC 3966
+`tel:+...;ext=...` URIs. Local `tel:` URIs that depend on `phone-context` are not
+supported. National input requires a supported `default_region`. Parsing
+establishes a normalized number structure; it does not imply that the number is
+possible or valid.
 
 For `+33612345678 ext 42`, the formatters produce:
 

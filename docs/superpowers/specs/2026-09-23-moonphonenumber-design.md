@@ -23,7 +23,7 @@ These prefix summaries are the library's deliberately bounded recognition set. `
 
 ## API and behavior
 
-The public `PhoneNumber` stores an ISO region, calling code, national significant number, and optional extension. `parse(input, default_region?)` accepts ASCII digits, an optional leading `+` or `00`, spaces, parentheses, hyphens, dots, and common `ext`/`x` extension suffixes. Inputs without an international prefix require a supported default region. Parsing establishes number structure; it does not imply that the number is possible or valid.
+The public `PhoneNumber` stores an ISO region, calling code, national significant number, and optional extension. `parse(input, default_region?)` accepts ASCII digits, an optional leading `+` or `00`, spaces, parentheses, hyphens, dots, common `ext`/`x` extension suffixes, and global RFC 3966 `tel:+...;ext=...` URIs. Inputs without an international prefix require a supported default region. Parsing establishes number structure; it does not imply that the number is possible or valid. Local RFC 3966 URIs that rely on `phone-context` are outside this release.
 
 The public API exposes:
 

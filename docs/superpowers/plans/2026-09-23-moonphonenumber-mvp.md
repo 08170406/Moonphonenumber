@@ -177,7 +177,7 @@ Expected: all tests pass and the demo prints the documented examples.
 
 README must show the four supported regions and clearly say that valid means numbering-plan match, not subscriber assignment or reachability.
 
-- [ ] **Step 2: Format and run full MoonBit checks**
+- [x] **Step 2: Format and run full MoonBit checks**
 
 Run: `moon fmt`
 Run: `moon check`
@@ -186,8 +186,34 @@ Run: `moon info`
 Run: `moon run examples/demo`
 Expected: every command exits 0 and generated interface changes match the intended public API.
 
-- [ ] **Step 3: Review the final diff and commit verified work**
+- [x] **Step 3: Review the final diff and commit verified work**
 
 Run: `git status --short`; `git diff --check`; `git diff --stat`; review `git diff` and confirm no synced `sources/` files were touched. Commit as `feat: add Moonphonenumber regional MVP` after verification.
+
+---
+
+## Follow-up quality milestones
+
+These are separate user-facing improvements to carry the package beyond the initial MVP. Each milestone should remain an independently understandable commit; do not create empty or bookkeeping-only commits.
+
+### Task 7: Parse global RFC 3966 telephone URIs
+
+Accept global `tel:+...` input with an optional `;ext=<digits>` parameter, while keeping local `phone-context` URIs out of scope. Add failing tests before updating the parser and documentation.
+
+- [x] Add a failing global URI parse/format round-trip case and reject local `phone-context` URIs.
+- [x] Implement `tel:` prefix and `;ext=` normalization.
+- [x] Update the public parsing documentation and verify the full test suite.
+
+### Task 8: Normalize `00` access prefixes while formatting as you type
+
+Recognize `00` as an international access prefix in progressive formatting, handle partial country-code entry, and preserve standard `+<code>` output. Add incremental tests first.
+
+### Task 9: Validate region and calling-code consistency
+
+Make possibility, validity, and type results require a supported region with its matching calling code. Cover manually constructed inconsistent public values with tests.
+
+### Task 10: Pin classification boundaries for every supported region
+
+Add regression cases around included and excluded prefixes, lengths, and overlapping categories. Keep the bounded coverage table and tests synchronized.
 
 
