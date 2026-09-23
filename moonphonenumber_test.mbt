@@ -325,4 +325,7 @@ test "progressive mobile formatting covers supported regions" {
   assert_eq(format_as_you_type("91234567", "SG"), "9123 4567")
   assert_eq(format_as_you_type("+861380", "CN"), "+86 138 0")
   assert_eq(format_as_you_type("+33612", "FR"), "+33 6 12")
+  assert_eq(format_as_you_type("00447700900123", "GB"), "+44 7700 900123")
+  assert_eq(format_as_you_type("0044", "GB"), "+44")
+  assert_eq(format_as_you_type("00", "GB"), "00")
 }

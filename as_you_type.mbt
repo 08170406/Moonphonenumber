@@ -55,6 +55,13 @@ pub fn format_as_you_type(input : String, region : String) -> String {
       return input
     }
   }
+  if !international && digits == "00" {
+    return input
+  }
+  if !international && digits.has_prefix("00") {
+    international = true
+    digits = digits.unsafe_substring(start=2, end=digits.length())
+  }
   if digits == "" {
     return if international { "+" } else { "" }
   }

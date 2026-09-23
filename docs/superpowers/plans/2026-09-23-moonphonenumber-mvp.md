@@ -208,6 +208,10 @@ Accept global `tel:+...` input with an optional `;ext=<digits>` parameter, while
 
 Recognize `00` as an international access prefix in progressive formatting, handle partial country-code entry, and preserve standard `+<code>` output. Add incremental tests first.
 
+- [x] Add failing cases for complete and partial `00` prefixes.
+- [x] Normalize the access prefix before the existing international grouping logic.
+- [x] Document and run the progressive-format regression suite.
+
 ### Task 9: Validate region and calling-code consistency
 
 Make possibility, validity, and type results require a supported region with its matching calling code. Cover manually constructed inconsistent public values with tests.
