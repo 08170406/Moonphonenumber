@@ -430,6 +430,26 @@ test "as-you-type grouping follows recognized mobile prefixes" {
 }
 
 ///|
+test "supported region and calling-code discovery" {
+  let regions = supported_regions()
+  assert_eq(regions.length(), 4)
+  assert_eq(regions[0], "CN")
+  assert_eq(regions[1], "FR")
+  assert_eq(regions[2], "GB")
+  assert_eq(regions[3], "SG")
+  assert_eq(calling_code_for_region("CN"), Some("86"))
+  assert_eq(calling_code_for_region("FR"), Some("33"))
+  assert_eq(calling_code_for_region("GB"), Some("44"))
+  assert_eq(calling_code_for_region("SG"), Some("65"))
+  assert_eq(calling_code_for_region("US"), None)
+  assert_eq(region_for_calling_code("86"), Some("CN"))
+  assert_eq(region_for_calling_code("33"), Some("FR"))
+  assert_eq(region_for_calling_code("44"), Some("GB"))
+  assert_eq(region_for_calling_code("65"), Some("SG"))
+  assert_eq(region_for_calling_code("1"), None)
+}
+
+///|
 test "progressive mobile formatting covers supported regions" {
   assert_eq(format_as_you_type("1380", "CN"), "138 0")
   assert_eq(format_as_you_type("0612", "FR"), "06 12")

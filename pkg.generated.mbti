@@ -2,9 +2,15 @@
 package "08170406/moonphonenumber"
 
 // Values
+pub fn calling_code_for_region(String) -> String?
+
 pub fn format_as_you_type(String, String) -> String
 
 pub fn parse(String, default_region? : String) -> Result[PhoneNumber, ParseError]
+
+pub fn region_for_calling_code(String) -> String?
+
+pub fn supported_regions() -> Array[String]
 
 // Errors
 
