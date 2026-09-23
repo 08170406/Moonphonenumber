@@ -98,7 +98,7 @@ Expected: all Task 1 and Task 2 cases pass and malformed characters return `Inva
 
 - [ ] **Step 1: Add failing format assertions**
 
-For `+33612345678 ext 42`, assert E.164 `+33612345678`, international `+33 6 12 34 56 78`, national `06 12 34 56 78`, and RFC 3966 `tel:+33-6-12-34-56-78;ext=42`. Add representative CN, GB, and SG formatting examples.
+For `+33612345678 ext 42`, assert E.164 `+33612345678`, international `+33 6 12 34 56 78 ext. 42`, national `06 12 34 56 78 ext. 42`, and RFC 3966 `tel:+33-6-12-34-56-78;ext=42`. Add representative CN, GB, and SG formatting examples.
 
 - [ ] **Step 2: Run `moon test` and verify formatting fails**
 
