@@ -216,6 +216,10 @@ Recognize `00` as an international access prefix in progressive formatting, hand
 
 Make possibility, validity, and type results require a supported region with its matching calling code. Cover manually constructed inconsistent public values with tests.
 
+- [x] Add a failing case using a mismatched `CN` region and `33` calling code.
+- [x] Require the stored calling code to match the region metadata before checks pass.
+- [x] Document the integrity check and verify possible/valid/type results.
+
 ### Task 10: Pin classification boundaries for every supported region
 
 Add regression cases around included and excluded prefixes, lengths, and overlapping categories. Keep the bounded coverage table and tests synchronized.

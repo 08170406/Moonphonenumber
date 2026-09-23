@@ -77,7 +77,8 @@ of every number currently assigned in each country.
 | GB | 9, 10 | Mobile: 71–75 or 77–79; fixed line: first digit 1 or 2; toll-free: 800/808; selected premium prefixes: 842–845, 870–873, 90/91, 982–989 |
 | SG | 8, 10, 11 | Mobile: 801–809, 81–89, 90–98; fixed line: starting `6`; VoIP: 31, 32, 666; toll-free: 800/1800; premium: 1900 |
 
-`is_possible()` checks the supported region and national-number length.
+`is_possible()` checks that the supported region and calling code agree, the
+national number contains only ASCII digits, and its length is supported.
 `number_type()` returns `Unknown` when the number falls outside the recognized
 type patterns or has an impossible length. `is_valid()` requires both a
 supported length and a recognized type pattern. A `true` result means only that

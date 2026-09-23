@@ -12,7 +12,16 @@ fn is_ascii_digits(value : String) -> Bool {
 }
 
 ///|
+fn region_matches_calling_code(region : String, calling_code : String) -> Bool {
+  match metadata_for_region(region) {
+    Some(metadata) => metadata.calling_code == calling_code
+    None => false
+  }
+}
+
+///|
 pub fn PhoneNumber::is_possible(self : PhoneNumber) -> Bool {
+  region_matches_calling_code(self.region, self.calling_code) &&
   is_ascii_digits(self.national_number) &&
   possible_length(self.region, self.national_number.length())
 }

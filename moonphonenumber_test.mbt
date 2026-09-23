@@ -318,6 +318,19 @@ test "possible lengths and recognized prefixes are independent" {
 }
 
 ///|
+test "validation rejects inconsistent region and calling code fields" {
+  let number : PhoneNumber = {
+    region: "CN",
+    calling_code: "33",
+    national_number: "13800138000",
+    extension: None,
+  }
+  assert_false(number.is_possible())
+  assert_false(number.is_valid())
+  assert_true(number.number_type() is Unknown)
+}
+
+///|
 test "progressive mobile formatting covers supported regions" {
   assert_eq(format_as_you_type("1380", "CN"), "138 0")
   assert_eq(format_as_you_type("0612", "FR"), "06 12")
