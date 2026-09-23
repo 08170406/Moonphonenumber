@@ -36,26 +36,6 @@ pub(all) enum ParseError {
 }
 
 ///|
-pub fn parse(
-  input : String,
-  default_region? : String,
-) -> Result[PhoneNumber, ParseError] {
-  let _ = default_region
-  if input.has_prefix("+33") {
-    let national_number = input.unsafe_substring(start=3, end=input.length())
-    if national_number == "" {
-      Err(MissingNationalNumber)
-    } else {
-      Ok({ region: "FR", calling_code: "33", national_number, extension: None, })
-    }
-  } else if input == "" {
-    Err(EmptyInput)
-  } else {
-    Err(UnsupportedCallingCode)
-  }
-}
-
-///|
 pub fn PhoneNumber::is_possible(self : PhoneNumber) -> Bool {
   let _ = self
   false
