@@ -456,6 +456,23 @@ test "supported region and calling-code discovery" {
 }
 
 ///|
+test "AU mobile numbers format progressively as typed" {
+  assert_eq(format_as_you_type("0412345", "AU"), "0412 345")
+  assert_eq(format_as_you_type("0412345678", "AU"), "0412 345 678")
+  assert_eq(format_as_you_type("+61412345", "AU"), "+61 412 345")
+  assert_eq(format_as_you_type("0512345678", "AU"), "0512345678")
+}
+
+///|
+test "JP mobile numbers format progressively as typed" {
+  assert_eq(format_as_you_type("0901234", "JP"), "090-1234")
+  assert_eq(format_as_you_type("09012345678", "JP"), "090-1234-5678")
+  assert_eq(format_as_you_type("+81901234", "JP"), "+81 90-1234")
+  assert_eq(format_as_you_type("08012345678", "JP"), "080-1234-5678")
+  assert_eq(format_as_you_type("05012345678", "JP"), "05012345678")
+}
+
+///|
 test "Australian mobile and fixed line formatting" {
   match parse("+61412345678") {
     Ok(number) => {

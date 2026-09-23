@@ -3,6 +3,7 @@ fn group_partial(
   digits : String,
   first_group : Int,
   next_group : Int,
+  separator : String,
 ) -> String {
   let mut result = ""
   let mut cursor = 0
@@ -15,7 +16,7 @@ fn group_partial(
       length
     }
     if cursor > 0 {
-      result += " "
+      result += separator
     }
     result += digits.unsafe_substring(start=cursor, end~)
     cursor = end
@@ -81,7 +82,7 @@ pub fn format_as_you_type(input : String, region : String) -> String {
   if national == "" {
     return "+\{code}"
   }
-  let (is_mobile_prefix, first_group, next_group) = match region {
+  let (is_mobile_prefix, first_group, next_group, separator) = match region {
     "CN" =>
       (
         matches_mobile_prefix(national, [
@@ -89,6 +90,7 @@ pub fn format_as_you_type(input : String, region : String) -> String {
         ]),
         3,
         4,
+        " ",
       )
     "FR" if international =>
       (
@@ -97,6 +99,7 @@ pub fn format_as_you_type(input : String, region : String) -> String {
         ]),
         1,
         2,
+        " ",
       )
     "FR" =>
       (
@@ -105,6 +108,7 @@ pub fn format_as_you_type(input : String, region : String) -> String {
         ]),
         2,
         2,
+        " ",
       )
     "GB" if international =>
       (
@@ -113,6 +117,7 @@ pub fn format_as_you_type(input : String, region : String) -> String {
         ]),
         4,
         6,
+        " ",
       )
     "GB" =>
       (
@@ -121,6 +126,7 @@ pub fn format_as_you_type(input : String, region : String) -> String {
         ]),
         5,
         6,
+        " ",
       )
     "SG" =>
       (
@@ -131,13 +137,32 @@ pub fn format_as_you_type(input : String, region : String) -> String {
         ]),
         4,
         4,
+        " ",
       )
-    _ => (false, 0, 0)
+    "AU" if international =>
+      (matches_mobile_prefix(national, ["4"]), 3, 3, " ")
+    "AU" =>
+      (matches_mobile_prefix(national, ["04"]), 4, 3, " ")
+    "JP" if international =>
+      (
+        matches_mobile_prefix(national, ["60", "70", "80", "90"]),
+        2,
+        4,
+        "-",
+      )
+    "JP" =>
+      (
+        matches_mobile_prefix(national, ["060", "070", "080", "090"]),
+        3,
+        4,
+        "-",
+      )
+    _ => (false, 0, 0, " ")
   }
   if !is_mobile_prefix {
     return input
   }
-  let formatted = group_partial(national, first_group, next_group)
+  let formatted = group_partial(national, first_group, next_group, separator)
   if international {
     "+\{code} \{formatted}"
   } else {
