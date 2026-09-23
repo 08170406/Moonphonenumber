@@ -157,6 +157,10 @@ pub fn format_as_you_type(input : String, region : String) -> String {
         4,
         "-",
       )
+    "IN" if international =>
+      (matches_mobile_prefix(national, ["9"]), 5, 5, " ")
+    "IN" =>
+      (matches_mobile_prefix(national, ["09"]), 6, 5, " ")
     _ => (false, 0, 0, " ")
   }
   if !is_mobile_prefix {

@@ -101,25 +101,25 @@ git commit -m "feat: format Indian mobile numbers"
 - Consumes: existing `format_as_you_type(input, region)` and `matches_mobile_prefix(number, prefixes)`.
 - Produces: domestic `09` candidate matching grouped as 6 then 5 digits (trunk plus first five NSN digits); international `9` candidate matching grouped as 5 then 5 digits with the existing `+91` and `00` handling.
 
-- [ ] **Step 1: Add failing domestic, international, 00, partial, and excluded-prefix examples**
+- [x] **Step 1: Add failing domestic, international, 00, partial, and excluded-prefix examples**
 
 Assert `format_as_you_type("09876543210", "IN") == "098765 43210"`, `format_as_you_type("0987654", "IN") == "098765 4"`, `format_as_you_type("+919876543210", "IN") == "+91 98765 43210"`, `format_as_you_type("+9198765", "IN") == "+91 98765"`, and `format_as_you_type("00919876543210", "IN") == "+91 98765 43210"`. Assert `format_as_you_type("0812345", "IN") == "0812345"`.
 
-- [ ] **Step 2: Run the tests and confirm progressive India formatting is missing**
+- [x] **Step 2: Run the tests and confirm progressive India formatting is missing**
 
 Run: `moon test`
 Expected: Indian progressive-format examples fail while existing progressive examples pass.
 
-- [ ] **Step 3: Add the two Indian progressive-format branches**
+- [x] **Step 3: Add the two Indian progressive-format branches**
 
 In `format_as_you_type`, add an `IN` case to the region match. When international, use `matches_mobile_prefix(national, ["9"])`, first group 5, next group 5, separator space. When domestic, use `matches_mobile_prefix(national, ["09"])`, first group 6, next group 5, separator space. Reuse existing international normalization and `group_partial`.
 
-- [ ] **Step 4: Run the complete test suite**
+- [x] **Step 4: Run the complete test suite**
 
 Run: `moon test`
 Expected: new domestic/`+91`/`00` cases pass and all prior region tests remain passing.
 
-- [ ] **Step 5: Commit progressive formatting**
+- [x] **Step 5: Commit progressive formatting**
 
 ```powershell
 git add moonphonenumber_test.mbt as_you_type.mbt
