@@ -50,4 +50,5 @@ fn main {
   }
   print_mobile_example("AU", "0412 345 678", "AU", "0412345", "0412345678")
   print_mobile_example("JP", "090-1234-5678", "JP", "0901234", "09012345678")
+  print_mobile_example("IN", "09876543210", "IN", "0987654", "09876543210")
 }

@@ -136,20 +136,20 @@ git commit -m "feat: format Indian numbers as typed"
 - Consumes: implemented `IN` parse, format, type, validation, and as-you-type behavior.
 - Produces: discoverable documentation of seven-region coverage, India limits and examples; an Indian mobile in the demo.
 
-- [ ] **Step 1: Update README coverage and examples**
+- [x] **Step 1: Update README coverage and examples**
 
 Change the supported count from six to seven and append IN / +91 to the numbering subset table. Document the 10-digit `9`-prefix Mobile subset and possible-but-unknown behavior for other 10-digit prefixes. Add Indian outputs for `+919876543210` to all four format examples and domestic `09876543210` parsing. Add `IN` examples for domestic, `+91`, and unsupported-prefix as-you-type behavior. Keep the existing metadata version, assignment limitations, and all other region boundaries accurate.
 
-- [ ] **Step 2: Add an Indian sample to the demo**
+- [x] **Step 2: Add an Indian sample to the demo**
 
 Add `print_mobile_example("IN", "09876543210", "IN", "098765", "09876543210")` alongside the AU and JP calls, preserving the existing CN demo.
 
-- [ ] **Step 3: Run tests and the runnable demo**
+- [x] **Step 3: Run tests and the runnable demo**
 
 Run: `moon test` and `moon run examples/demo`
 Expected: the suite passes and demo output includes Indian E.164, validity/type, and progressive formatting.
 
-- [ ] **Step 4: Commit documentation and demo**
+- [x] **Step 4: Commit documentation and demo**
 
 ```powershell
 git add README.md examples/demo/main.mbt
