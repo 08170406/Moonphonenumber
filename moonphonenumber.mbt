@@ -34,27 +34,3 @@ pub(all) enum ParseError {
   MissingNationalNumber
   TooLong
 }
-
-///|
-pub fn PhoneNumber::is_possible(self : PhoneNumber) -> Bool {
-  let _ = self
-  false
-}
-
-///|
-pub fn PhoneNumber::is_valid(self : PhoneNumber) -> Bool {
-  let _ = self
-  false
-}
-
-///|
-pub fn PhoneNumber::number_type(self : PhoneNumber) -> NumberType {
-  let _ = self
-  Unknown
-}
-
-///|
-pub fn format_as_you_type(input : String, region : String) -> String {
-  let _ = region
-  input
-}

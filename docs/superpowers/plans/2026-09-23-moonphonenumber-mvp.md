@@ -106,7 +106,7 @@ Expected: missing method or wrong-format assertions.
 
 - [x] **Step 3: Implement grouping and format selection**
 
-Apply supported group patterns by region and number type: FR `1-2-2-2-2`; CN mobile `3-4-4`, CN geographic `2/3-rest`; GB mobile `4-6`, London geographic `2-4-4`, other supported geographic examples `3-3-4`; SG `4-4`. Prefix national output with the region trunk prefix (`0` for CN/FR/GB; none for SG). E.164 never includes separators or extensions.
+Apply supported group patterns by region and number type: FR `1-2-2-2-2`; CN mobile `3-4-4`, CN geographic `2/3-rest`; GB mobile `4-6`, London geographic `2-4-4`, other supported geographic examples `3-3-4`; SG `4-4`. National output uses `0` for supported CN geographic, FR, and GB numbers; CN mobile omits the trunk `0`, and SG has none. E.164 never includes separators or extensions.
 
 - [x] **Step 4: Run `moon test` and confirm all four formats pass**
 
@@ -121,19 +121,19 @@ Expected: output exactly matches the examples in Step 1.
 **Interfaces:**
 - Produce: `PhoneNumber::is_possible(self : PhoneNumber) -> Bool`, `PhoneNumber::is_valid(self : PhoneNumber) -> Bool`, and `PhoneNumber::number_type(self : PhoneNumber) -> NumberType`.
 
-- [ ] **Step 1: Add failing plan classification cases**
+- [x] **Step 1: Add failing plan classification cases**
 
 Cover CN `13800138000` as possible, valid, Mobile and `01012345678` as FixedLine; GB `7700900123` as valid Mobile, `2070313000` as FixedLine, `8001234567` as TollFree, and `7000000000` as possible but unrecognized; FR `612345678` as valid Mobile, `123456789` as FixedLine, and `800123456` as TollFree; SG `91234567` as valid Mobile, `61234567` as FixedLine, `31234567` as Voip, and `18001234567` as TollFree. Also cover a supported-length but disallowed prefix as possible yet invalid, and a wrong-length value as not possible.
 
-- [ ] **Step 2: Run `moon test` and verify the plan checks fail**
+- [x] **Step 2: Run `moon test` and verify the plan checks fail**
 
 Expected: missing methods or incorrect classification.
 
-- [ ] **Step 3: Implement length and prefix rules from the pinned subset**
+- [x] **Step 3: Implement length and prefix rules from the pinned subset**
 
 Keep the lengths and category prefix rules listed in the design document in `metadata.mbt`, classify the documented basic types, return `Unknown` for unmodeled ranges, and make `is_valid` false unless both possibility and a supported prefix/type rule match.
 
-- [ ] **Step 4: Run `moon test` and confirm classifications pass**
+- [x] **Step 4: Run `moon test` and confirm classifications pass**
 
 Expected: possibility, validity, and type are independently asserted for all four regions.
 
@@ -148,19 +148,19 @@ Expected: possibility, validity, and type are independently asserted for all fou
 **Interfaces:**
 - Produce: `format_as_you_type(input : String, region : String) -> String`.
 
-- [ ] **Step 1: Add failing incremental-format cases**
+- [x] **Step 1: Add failing incremental-format cases**
 
 Assert partial CN mobile `1380` becomes `138 0`, FR `0612` becomes `06 12`, GB `07700` becomes `07700`, and SG `91234567` becomes `9123 4567`.
 
-- [ ] **Step 2: Run `moon test` and verify progressive grouping fails**
+- [x] **Step 2: Run `moon test` and verify progressive grouping fails**
 
 Expected: missing function or mismatched grouping.
 
-- [ ] **Step 3: Implement stateless regional mobile grouping and the demo**
+- [x] **Step 3: Implement stateless regional mobile grouping and the demo**
 
 Format only characters available so far, preserve `+` for international input, and do not mark an incomplete value as valid. The demo parses one number, prints E.164/validity/type, and prints progressive CN mobile samples.
 
-- [ ] **Step 4: Run `moon test` and the demo**
+- [x] **Step 4: Run `moon test` and the demo**
 
 Run: `moon test`
 Run: `moon run examples/demo`
@@ -173,7 +173,7 @@ Expected: all tests pass and the demo prints the documented examples.
 - Modify: `NOTICE`
 - Verify: all files from Tasks 1–5.
 
-- [ ] **Step 1: Document API examples, region coverage, provenance, limitations, and build/test/run commands**
+- [x] **Step 1: Document API examples, region coverage, provenance, limitations, and build/test/run commands**
 
 README must show the four supported regions and clearly say that valid means numbering-plan match, not subscriber assignment or reachability.
 

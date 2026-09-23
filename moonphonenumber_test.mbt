@@ -143,7 +143,7 @@ test "Chinese mobile and geographic formatting" {
   match parse("+8613800138000") {
     Ok(number) => {
       assert_eq(number.format(International), "+86 138 0013 8000")
-      assert_eq(number.format(National), "0138 0013 8000")
+      assert_eq(number.format(National), "138 0013 8000")
       assert_eq(number.format(Rfc3966), "tel:+86-138-0013-8000")
     }
     Err(_) => fail("expected Chinese mobile")
@@ -194,4 +194,118 @@ test "Singapore formatting has no national trunk prefix" {
     }
     Err(_) => fail("expected Singapore number")
   }
+}
+
+///|
+test "bounded plan validation classifies supported number types" {
+  match parse("13800138000", default_region="CN") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_true(number.is_valid())
+      assert_true(number.number_type() is Mobile)
+    }
+    Err(_) => fail("expected CN mobile")
+  }
+  match parse("01012345678", default_region="CN") {
+    Ok(number) => assert_true(number.number_type() is FixedLine)
+    Err(_) => fail("expected CN geographic number")
+  }
+
+  match parse("7700900123", default_region="GB") {
+    Ok(number) => {
+      assert_true(number.is_valid())
+      assert_true(number.number_type() is Mobile)
+    }
+    Err(_) => fail("expected GB mobile")
+  }
+  match parse("2070313000", default_region="GB") {
+    Ok(number) => assert_true(number.number_type() is FixedLine)
+    Err(_) => fail("expected GB fixed line")
+  }
+  match parse("8001234567", default_region="GB") {
+    Ok(number) => assert_true(number.number_type() is TollFree)
+    Err(_) => fail("expected GB toll-free number")
+  }
+  match parse("09012345678", default_region="GB") {
+    Ok(number) => {
+      assert_true(number.is_valid())
+      assert_true(number.number_type() is PremiumRate)
+    }
+    Err(_) => fail("expected GB premium-rate number")
+  }
+  match parse("7000000000", default_region="GB") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_false(number.is_valid())
+      assert_true(number.number_type() is Unknown)
+    }
+    Err(_) => fail("expected structurally parsed GB number")
+  }
+
+  match parse("612345678", default_region="FR") {
+    Ok(number) => assert_true(number.number_type() is Mobile)
+    Err(_) => fail("expected French mobile")
+  }
+  match parse("123456789", default_region="FR") {
+    Ok(number) => assert_true(number.number_type() is FixedLine)
+    Err(_) => fail("expected French fixed line")
+  }
+  match parse("800123456", default_region="FR") {
+    Ok(number) => assert_true(number.number_type() is TollFree)
+    Err(_) => fail("expected French toll-free number")
+  }
+
+  match parse("91234567", default_region="SG") {
+    Ok(number) => assert_true(number.number_type() is Mobile)
+    Err(_) => fail("expected Singapore mobile")
+  }
+  match parse("61234567", default_region="SG") {
+    Ok(number) => assert_true(number.number_type() is FixedLine)
+    Err(_) => fail("expected Singapore fixed line")
+  }
+  match parse("31234567", default_region="SG") {
+    Ok(number) => assert_true(number.number_type() is Voip)
+    Err(_) => fail("expected Singapore VoIP number")
+  }
+  match parse("66612345", default_region="SG") {
+    Ok(number) => assert_true(number.number_type() is Voip)
+    Err(_) => fail("expected Singapore 666 VoIP number")
+  }
+  match parse("18001234567", default_region="SG") {
+    Ok(number) => assert_true(number.number_type() is TollFree)
+    Err(_) => fail("expected Singapore toll-free number")
+  }
+  match parse("19001234", default_region="SG") {
+    Ok(number) => assert_true(number.number_type() is PremiumRate)
+    Err(_) => fail("expected Singapore premium-rate number")
+  }
+}
+
+///|
+test "possible lengths and recognized prefixes are independent" {
+  match parse("123456789012", default_region="CN") {
+    Ok(number) => {
+      assert_false(number.is_possible())
+      assert_false(number.is_valid())
+    }
+    Err(_) => fail("expected structurally parsed CN number")
+  }
+  match parse("700000000", default_region="FR") {
+    Ok(number) => {
+      assert_true(number.is_possible())
+      assert_false(number.is_valid())
+      assert_true(number.number_type() is Unknown)
+    }
+    Err(_) => fail("expected structurally parsed French number")
+  }
+}
+
+///|
+test "progressive mobile formatting covers supported regions" {
+  assert_eq(format_as_you_type("1380", "CN"), "138 0")
+  assert_eq(format_as_you_type("0612", "FR"), "06 12")
+  assert_eq(format_as_you_type("07700", "GB"), "07700")
+  assert_eq(format_as_you_type("91234567", "SG"), "9123 4567")
+  assert_eq(format_as_you_type("+861380", "CN"), "+86 138 0")
+  assert_eq(format_as_you_type("+33612", "FR"), "+33 6 12")
 }

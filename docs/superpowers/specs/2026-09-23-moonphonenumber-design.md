@@ -34,7 +34,7 @@ The public API exposes:
 - `PhoneNumber::format(self, format : PhoneFormat) -> String`
 - `format_as_you_type(input : String, region : String) -> String`
 
-Formats are E.164, international, national, and RFC 3966. E.164 strips extensions and emits `+<calling-code><national-number>`. International and national formats append ` ext. <digits>` when an extension is present. RFC 3966 emits `tel:+<calling-code>-<groups>` and appends `;ext=<digits>` when present. National formatting uses the selected region's domestic prefix and grouping rules.
+Formats are E.164, international, national, and RFC 3966. E.164 strips extensions and emits `+<calling-code><national-number>`. International and national formats append ` ext. <digits>` when an extension is present. RFC 3966 emits `tel:+<calling-code>-<groups>` and appends `;ext=<digits>` when present. National formatting uses the selected region's domestic prefix and grouping rules: the supported Chinese mobile pattern omits its trunk `0`, Chinese geographic, French, and British patterns include `0`, and Singapore has no trunk prefix.
 
 Possible checks use supported national-number lengths. Valid checks additionally use the bounded leading-digit/type patterns. These checks describe numbering-plan plausibility only: they do not establish assignment, reachability, ownership, or SMS capability.
 
